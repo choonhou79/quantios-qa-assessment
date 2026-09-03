@@ -1,0 +1,101 @@
+{
+  "info": {
+    "_postman_id": "b90b4c3f-b17e-4dd6-b06e-quantiosqa0001",
+    "name": "Quantios Watchlist API",
+    "description": "Postman collection for testing the Quantios watchlist POST and GET APIs.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "watchlist_post",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"{{username}}\",\n  \"symbol\": \"AAPL\",\n  \"name\": \"Apple Inc.\",\n  \"price\": 150.54,\n  \"change\": 0.5,\n  \"change_percent\": 0.5\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{baseUrl}}/watchlist_post",
+        "description": "Adds Apple Inc. (AAPL) to the user's watchlist."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 201', function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test('Stock is added successfully', function () {",
+              "    const response = pm.response.json();",
+              "    pm.expect(response.message).to.eql('Added to watchlist.');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "watchlist_get",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/watchlist_get?username={{username}}",
+        "description": "Retrieves the watchlist for the specified user."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Response body is an array', function () {",
+              "    const response = pm.response.json();",
+              "    pm.expect(response).to.be.an('array');",
+              "});",
+              "",
+              "pm.test('Watchlist contains AAPL', function () {",
+              "    const response = pm.response.json();",
+              "    const apple = response.find(item => item.symbol === 'AAPL');",
+              "",
+              "    pm.expect(apple).to.exist;",
+              "    pm.expect(apple.name).to.eql('Apple Inc.');",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://qainterview.netlify.app/.netlify/functions",
+      "type": "string"
+    },
+    {
+      "key": "username",
+      "value": "choonhou79",
+      "type": "string"
+    }
+  ]
+}

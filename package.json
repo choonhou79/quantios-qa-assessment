@@ -1,0 +1,21 @@
+{
+  "name": "quantios-qa-assessment",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Quantios QA Analyst take-home assessment - Playwright UI automation and Postman API collection",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "report": "playwright show-report",
+    "test:api": "newman run postman/Quantios-Watchlist.postman_collection.json",
+    "test:all": "npm test && npm run test:api"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "@types/node": "^24.0.0",
+    "dotenv": "^17.0.0",
+    "newman": "^6.2.2",
+    "typescript": "^5.8.0"
+  }
+}
